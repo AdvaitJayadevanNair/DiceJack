@@ -89,27 +89,27 @@
 		transform: rotateX(-360deg) rotateY(-900deg) rotateZ(-360deg);
 	}
 	.front {
-		background: url(1.svg);
+		background: url(/1.svg);
 		transform: rotate3d(0, 0, 0, 90deg) translateZ(50px);
 	}
 	.back {
-		background: url(2.svg);
+		background: url(/2.svg);
 		transform: rotate3d(-1, 0, 0, 90deg) translateZ(50px);
 	}
 	.right {
-		background: url(3.svg);
+		background: url(/3.svg);
 		transform: rotate3d(0, 1, 0, 90deg) translateZ(50px);
 	}
 	.left {
-		background: url(4.svg);
+		background: url(/4.svg);
 		transform: rotate3d(0, -1, 0, 90deg) translateZ(50px);
 	}
 	.top {
-		background: url(5.svg);
+		background: url(/5.svg);
 		transform: rotate3d(1, 0, 0, 90deg) translateZ(50px);
 	}
 	.bottom {
-		background: url(6.svg);
+		background: url(/6.svg);
 		transform: rotate3d(1, 0, 0, 180deg) translateZ(50px);
 	}
 </style>
