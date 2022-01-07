@@ -1,65 +1,49 @@
 <script>
-	import { fade } from 'svelte/transition';
-	import { elasticOut } from 'svelte/easing';
+	import { onMount } from 'svelte';
+	export let face = 1;
 
-	let visible = false;
+	let b = Math.random() < 0.5;
 
-	setTimeout(() => visible = true, 1000);
+	onMount(() => {
+		setTimeout(() => {
+			b = !b;
+			// die.dataset.roll = getRandomNumber(1, 6);
+		});
+	});
 
-	function roll(node, {
-		delay = 0,
-		duration = 3000,
-		face = 1, 
-	}) {
-		return {
-			duration,
-			css: t => {
-				let faces = [
-					0,
-					[1,1,1,0],
-					[0,1,0,180],
-					[1,0,0,270],
-					[0,1,0,90],
-					[0,1,0,270],
-					[1,0,0,90],
-				];
-
-				const eased = elasticOut(t);
-
-				return `
-					transform: rotate3d(1, 1, 1, ${eased * 1080}deg) scale(${eased});
-					color: hsl(
-						${Math.trunc(t * 360)},
-						${Math.min(100, 1000 - 1000 * t)}%,
-						${Math.min(50, 500 - 500 * t)}%
-					);`
-			}
-		};
+	function getRandomNumber(min, max) {
+		min = Math.ceil(min);
+		max = Math.floor(max);
+		return Math.floor(Math.random() * (max - min + 1)) + min;
 	}
 </script>
 
-{#if visible}
-	<div class="dice" in:roll="{{ face: 2 }}">
-		<div class="face front"></div>
-		<div class="face back"></div>
-		<div class="face left"></div>
-		<div class="face right"></div>
-		<div class="face top"></div>
-		<div class="face bottom"></div>
-	</div>
-{/if}
-
-
+<div class="die {b ? 'odd-roll' : 'even-roll'}" data-roll="{face}">
+	<div class="face front"></div>
+	<div class="face back"></div>
+	<div class="face left"></div>
+	<div class="face right"></div>
+	<div class="face top"></div>
+	<div class="face bottom"></div>
+</div>
+<div class="odd-roll" data-roll="{face}"></div>
 
 <style>
-	.dice {
-		margin-top: 50px;
-		margin-left: 100px;
+	.die {
+		margin: 50px;
 		width: 100px;
 		height: 100px;
 		transform-style: preserve-3d;
-		/*transform: rotate3d(1, 1, 1, 45deg);*/
 	}
+
+	.even-roll {
+		transition: transform 1.5s ease-out;
+	}
+
+	.odd-roll {
+		transition: transform 1.25s ease-out;
+	}
+
 	.face {
 		width: 100%;
 		height: 100%;
@@ -68,28 +52,64 @@
 		color: #fff;
 	}
 
+	.even-roll[data-roll='1'] {
+		transform: rotateX(360deg) rotateY(720deg) rotateZ(360deg);
+	}
+	.even-roll[data-roll='2'] {
+		transform: rotateX(450deg) rotateY(720deg) rotateZ(360deg);
+	}
+	.even-roll[data-roll='3'] {
+		transform: rotateX(360deg) rotateY(630deg) rotateZ(360deg);
+	}
+	.even-roll[data-roll='4'] {
+		transform: rotateX(360deg) rotateY(810deg) rotateZ(360deg);
+	}
+	.even-roll[data-roll='5'] {
+		transform: rotateX(270deg) rotateY(720deg) rotateZ(360deg);
+	}
+	.even-roll[data-roll='6'] {
+		transform: rotateX(360deg) rotateY(900deg) rotateZ(360deg);
+	}
+	.odd-roll[data-roll='1'] {
+		transform: rotateX(-360deg) rotateY(-720deg) rotateZ(-360deg);
+	}
+	.odd-roll[data-roll='2'] {
+		transform: rotateX(-270deg) rotateY(-720deg) rotateZ(-360deg);
+	}
+	.odd-roll[data-roll='3'] {
+		transform: rotateX(-360deg) rotateY(-810deg) rotateZ(-360deg);
+	}
+	.odd-roll[data-roll='4'] {
+		transform: rotateX(-360deg) rotateY(-630deg) rotateZ(-360deg);
+	}
+	.odd-roll[data-roll='5'] {
+		transform: rotateX(-450deg) rotateY(-720deg) rotateZ(-360deg);
+	}
+	.odd-roll[data-roll='6'] {
+		transform: rotateX(-360deg) rotateY(-900deg) rotateZ(-360deg);
+	}
 	.front {
 		background: url(/1.svg);
-		transform: translateZ(50px);
+		transform: rotate3d(0, 0, 0, 90deg) translateZ(50px);
 	}
 	.back {
 		background: url(/2.svg);
-		transform: rotateY(180deg) translateZ(50px);
+		transform: rotate3d(-1, 0, 0, 90deg) translateZ(50px);
 	}
 	.right {
-		background: url(/5.svg);
-		transform: rotateY(90deg) translateZ(50px);
+		background: url(/3.svg);
+		transform: rotate3d(0, 1, 0, 90deg) translateZ(50px);
 	}
 	.left {
 		background: url(/4.svg);
-		transform: rotateY(-90deg) translateZ(50px);
+		transform: rotate3d(0, -1, 0, 90deg) translateZ(50px);
 	}
 	.top {
-		background: url(/3.svg);
-		transform: rotateX(90deg) translateZ(50px);
+		background: url(/5.svg);
+		transform: rotate3d(1, 0, 0, 90deg) translateZ(50px);
 	}
 	.bottom {
 		background: url(/6.svg);
-		transform: rotateX(-90deg) translateZ(50px);
+		transform: rotate3d(1, 0, 0, 180deg) translateZ(50px);
 	}
 </style>
